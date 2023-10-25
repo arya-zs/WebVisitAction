@@ -25,4 +25,13 @@ jobs:
     - name: Print completion message
       run: echo "Webpage visited successfully."
 
+    - name: Create output file
+      run: echo "No screenshot captured" > output.txt
+
+    - name: Upload dummy artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: output
+        path: output.txt
+
     
