@@ -1,0 +1,38 @@
+name: Open Webpage
+
+on: workflow_dispatch
+  ##schedule:
+    ##- cron: "0 0 * * *"
+
+jobs:
+  open_webpage:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Chrome
+      uses: nanorepublica/setup-chrome@v1
+
+    - name: Open webpage
+      run: |
+        /usr/bin/google-chrome-stable --headless --disable-gpu --no-sandbox --virtual-time-budget=180000 https://kaggle.com/aryashah2k
+      env:
+        DISPLAY: ":99"
+
+    - name: Wait for 3 minutes
+      run: sleep 180
+
+    - name: Take screenshot
+      run: /usr/bin/google-chrome-stable --screenshot=/github/workspace/screenshot.png https://kaggle.com/aryashah2k
+      env:
+        DISPLAY: ":99"
+
+    - name: Close Chrome
+      run: pkill chrome
+
+    - name: Upload screenshot as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: webpage-screenshot
+        path: /github/workspace/screenshot.png
