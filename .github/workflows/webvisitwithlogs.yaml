@@ -28,7 +28,7 @@ jobs:
       run: sleep 180
 
     - name: Close Chrome
-      run: pkill chrome
+      run: killall chrome
 
     - name: Print log
       run: cat output.log
