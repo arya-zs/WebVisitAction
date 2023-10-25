@@ -1,0 +1,40 @@
+name: Open Webpage
+
+on: workflow_dispatch
+  ##schedule:
+    ##- cron: "0 0 * * *"
+
+jobs:
+  open_webpage:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y libnss3-dev xvfb
+
+    - name: Set up virtual framebuffer
+      run: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+
+    - name: Open webpage
+      run: |
+        google-chrome-stable --headless --disable-gpu --no-sandbox --virtual-time-budget=180000 https://www.kaggle.com/aryashah2k 2>&1 | tee output.log
+        echo "Webpage visited" >> output.log
+      env:
+        DISPLAY: ":99"
+
+    - name: Wait for 3 minutes
+      run: sleep 180
+
+    - name: Close Chrome
+      run: pkill chrome
+
+    - name: Print log
+      run: cat output.log
+
+    - name: Upload log as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: log
+        path: output.log
