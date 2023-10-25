@@ -28,7 +28,7 @@ jobs:
       run: sleep 10
 
     - name: Close Chrome
-      run: pkill -f "/usr/bin/google-chrome"
+      run: pkill -f "chrome"
 
     - name: Print log
       run: cat output.log
