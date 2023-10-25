@@ -1,0 +1,41 @@
+name: Open Webpage With BrowserLog
+
+on:
+  ##schedule:
+    ##- cron: "0 0 * * *"
+
+jobs:
+  open_webpage:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install Google Chrome
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+
+    - name: Open webpage
+      run: google-chrome-stable --headless --disable-gpu --no-sandbox --enable-logging --v=1 --virtual-time-budget=180000 https://github.com/aryashah2k
+
+    - name: Wait for 3 minutes
+      run: sleep 10
+
+    - name: Print completion message
+      run: echo "Webpage visited successfully."
+
+    - name: Create output file
+      run: echo "No screenshot captured" > output.txt
+
+    - name: Upload dummy artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: output
+        path: output.txt
+
+    - name: Upload browser log
+      uses: actions/upload-artifact@v2
+      with:
+        name: browser-log
+        path: chrome_debug.log
