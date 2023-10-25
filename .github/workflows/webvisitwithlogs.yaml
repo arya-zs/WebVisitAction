@@ -25,7 +25,7 @@ jobs:
         DISPLAY: ":99"
 
     - name: Wait for 3 minutes
-      run: sleep 180
+      run: sleep 10
 
     - name: Close Chrome
       run: killall chrome
