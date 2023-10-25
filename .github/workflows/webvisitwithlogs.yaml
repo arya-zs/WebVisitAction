@@ -1,4 +1,4 @@
-name: Open Webpage With Logs
+name: Open Webpage With Log
 
 on: workflow_dispatch
   ##schedule:
