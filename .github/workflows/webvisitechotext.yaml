@@ -1,4 +1,4 @@
-name: Open Webpage
+name: Open Webpage Echo Message
 
 on:
   schedule:
