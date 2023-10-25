@@ -1,0 +1,40 @@
+name: Open Webpage
+
+on: workflow_dispatch
+  ##schedule:
+    ##- cron: "0 0 * * *"
+
+jobs:
+  open_webpage:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y libnss3-dev xvfb
+
+    - name: Set up virtual framebuffer
+      run: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+
+    - name: Open webpage
+      run: google-chrome-stable --headless --disable-gpu --no-sandbox --virtual-time-budget=180000 https://www.kaggle.com/aryashah2k
+      env:
+        DISPLAY: ":99"
+
+    - name: Wait for 3 minutes
+      run: sleep 60
+
+    - name: Take screenshot
+      run: google-chrome-stable --screenshot=/github/workspace/screenshot.png https://www.kaggle.com/aryashah2k
+      env:
+        DISPLAY: ":99"
+
+    - name: Close Chrome
+      run: pkill chrome
+
+    - name: Upload screenshot as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: webpage-screenshot
+        path: /github/workspace/screenshot.png
