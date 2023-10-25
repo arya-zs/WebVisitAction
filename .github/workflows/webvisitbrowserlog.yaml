@@ -1,6 +1,6 @@
 name: Open Webpage With BrowserLog
 
-on:
+on: workflow_dispatch
   ##schedule:
     ##- cron: "0 0 * * *"
 
